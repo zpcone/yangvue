@@ -4,6 +4,7 @@
       ref="loginForm"
       :model="loginForm"
       class="login-form"
+      :rules="rules"
       auto-complete="on"
       label-position="left"
     >
@@ -39,7 +40,7 @@
           name="password"
           tabindex="2"
           auto-complete="on"
-          @keyup.enter.native="handleLogin1"
+          @keyup.enter.native="submitForm('loginForm')"
         />
         <span class="show-pwd" @click="showPwd">
           <svg-icon
@@ -52,7 +53,7 @@
         :loading="loading"
         type="primary"
         style="width: 100%; margin-bottom: 30px"
-        @click.native.prevent="handleLogin1"
+        @click.native.prevent="submitForm('loginForm')"
         >Login</el-button
       >
 
@@ -84,13 +85,15 @@ export default {
     // }
     return {
       loginForm: {
-        username: "admin",
-        password: "111111",
+        username: "",
+        password: "",
       },
-      // loginRules: {
-      //   username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-      //   password: [{ required: true, trigger: 'blur', validator: validatePassword }]
-      // },
+      rules: {
+        // username: [{ required: true, trigger: 'blur', validator: validateUsername }],
+        // password: [{ required: true, trigger: 'blur', validator: validatePassword }]
+        username: [{ required: true, trigger: 'blur',message: '请输入用户名' }],
+        password: [{ required: true, trigger: 'blur',message: "请输入密码" }]
+      },
       loading: false,
       passwordType: "password",
       redirect: undefined,
@@ -115,13 +118,22 @@ export default {
         this.$refs.password.focus();
       });
     },
+      submitForm(formName) {
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            this.handleLogin1()
+          } else {
+            return false;
+          }
+        });
+      },
     handleLogin1() {
       this.loading = true;
       this.$axios({
         method: "post",
-        url: "http://localhost:3000/login",
+        url: "/login",
         data: this.loginForm,
-        // withCredentials: true
+        withCredentials: true
       })
         .then((res) => {
           this.loading = false;

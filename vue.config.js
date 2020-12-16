@@ -29,14 +29,27 @@ module.exports = {
   assetsDir: 'static',
   lintOnSave: process.env.NODE_ENV === 'development',
   productionSourceMap: false,
+
   devServer: {
+    proxy: {
+      [process.env.VUE_APP_BASE_API]: {
+        //接口地址
+        target: 'http://localhost:3000',
+        ws: true,
+        secure: false,  // 如果是https接口，需设置secure为false
+        changeOrigin: true,
+        pathRewrite: {
+          ['^'+ process.env.VUE_APP_BASE_API]: '/'  //通过pathRewrite重写地址，将前缀/api转为/
+        }
+      }
+    },
     port: port,
     open: true,
     overlay: {
       warnings: false,
       errors: true
-    },
-    before: require('./mock/mock-server.js')
+    }
+    // before: require('./mock/mock-server.js')
   },
   configureWebpack: {
     // provide the app's title in webpack's name field, so that
