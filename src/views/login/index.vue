@@ -131,11 +131,12 @@ export default {
       this.loading = true;
       this.$axios({
         method: "post",
-        url: "/login",
+        url: "/doLogin",
         data: this.loginForm,
         withCredentials: true
       })
         .then((res) => {
+          console.log(res)
           this.loading = false;
           if (res.data.status) {
             this.$router.push({ path: this.redirect || "/" });
