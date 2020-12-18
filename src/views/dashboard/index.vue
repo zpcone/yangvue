@@ -129,6 +129,9 @@ export default {
       // lineChartData: lineChartData.newVisitis
     }
   },
+  created(){
+    console.log(this.$store.username)
+  },
   methods: {
     onSubmit() {
       if(!this.formInline.shopName){

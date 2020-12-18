@@ -1,5 +1,24 @@
 <template>
   <div class="login-container">
+    <vue-particles
+        color="#dedede"
+        :particleOpacity="0.3"
+        :particlesNumber="80"
+        shapeType="star"
+        :particleSize="2"
+        linesColor="#FFFFFF"
+        :linesWidth="2"
+        :lineLinked="true"
+        :lineOpacity="0.2"
+        :linesDistance="50"
+        :moveSpeed="2"
+        :hoverEffect="true"
+        hoverMode="grab"
+        :clickEffect="true"
+        clickMode="push"
+        class="cash"
+      >
+  </vue-particles>
     <el-form
       ref="loginForm"
       :model="loginForm"
@@ -9,7 +28,7 @@
       label-position="left"
     >
       <div class="title-container">
-        <h3 class="title">Login Form</h3>
+        <h3 class="title">客户管理系统</h3>
       </div>
 
       <el-form-item prop="username">
@@ -56,11 +75,6 @@
         @click.native.prevent="submitForm('loginForm')"
         >Login</el-button
       >
-
-      <div class="tips">
-        <span style="margin-right: 20px">username: admin</span>
-        <span> password: any</span>
-      </div>
     </el-form>
   </div>
 </template>
@@ -121,13 +135,13 @@ export default {
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            this.handleLogin1()
+            this.handleLoginSelf()
           } else {
             return false;
           }
         });
       },
-    handleLogin1() {
+    handleLoginSelf() {
       this.loading = true;
       this.$axios({
         method: "post",
@@ -139,6 +153,7 @@ export default {
           console.log(res)
           this.loading = false;
           if (res.data.status) {
+            this.$store.commit('SET_NAME',res.data.userInfo.username)
             this.$router.push({ path: this.redirect || "/" });
           } else {
             this.loginForm.username = "";
@@ -153,34 +168,34 @@ export default {
           this.loading = false;
         });
     },
-    handleLogin() {
-      this.$refs.loginForm.validate((valid) => {
-        if (valid) {
-          this.loading = true;
-          this.$axios({
-            method: "post",
-            url: "http://192.168.0.102:3000/login",
-            data: this.loginForm,
-          })
-            .then((response) => {
-              //这里使用了ES6的语法
-              console.log(response); //请求成功返回的数据
-            })
-            .catch(() => {
-              this.loading = false;
-            });
-          // this.$store.dispatch('user/login', this.loginForm).then(() => {
-          //   this.$router.push({ path: this.redirect || '/' })
-          //   this.loading = false
-          // }).catch(() => {
-          //   this.loading = false
-          // })
-        } else {
-          console.log("error submit!!");
-          return false;
-        }
-      });
-    },
+    // handleLogin() {
+    //   this.$refs.loginForm.validate((valid) => {
+    //     if (valid) {
+    //       this.loading = true;
+    //       this.$axios({
+    //         method: "post",
+    //         url: "http://192.168.0.102:3000/login",
+    //         data: this.loginForm,
+    //       })
+    //         .then((response) => {
+    //           //这里使用了ES6的语法
+    //           console.log(response); //请求成功返回的数据
+    //         })
+    //         .catch(() => {
+    //           this.loading = false;
+    //         });
+    //       // this.$store.dispatch('user/login', this.loginForm).then(() => {
+    //       //   this.$router.push({ path: this.redirect || '/' })
+    //       //   this.loading = false
+    //       // }).catch(() => {
+    //       //   this.loading = false
+    //       // })
+    //     } else {
+    //       console.log("error submit!!");
+    //       return false;
+    //     }
+    //   });
+    // },
   },
 };
 </script>
@@ -198,7 +213,13 @@ $cursor: #fff;
     color: $cursor;
   }
 }
-
+.cash{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
 /* reset element-ui css */
 .login-container {
   .el-input {
