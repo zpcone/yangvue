@@ -1,5 +1,6 @@
 <template>
   <div class="dashboard-editor-container">
+
     <el-form :inline="true" :model="formInline" class="demo-form-inline">
       <el-form-item label="店铺名称">
         <el-select v-model="formInline.shopName" placeholder="活动区域">
@@ -20,7 +21,8 @@
       </el-form-item>
    
       <el-form-item>
-        <el-button plain type="primary" @click="onSubmit">查询</el-button>
+        <el-button plain type="primary" @click="onSearchSubmit">查询</el-button>
+        <el-button plain type="primary" style="color:red;" @click="onAddSubmit">添加</el-button>
       </el-form-item>
     </el-form>
 
@@ -130,10 +132,31 @@ export default {
     }
   },
   created(){
-    console.log(this.$store.username)
-  },
+    // console.log(this.$store.state.user.username)
+    this.getAllGuest()
+  }, 
   methods: {
-    onSubmit() {
+    getAllGuest(){
+       this.$axios({
+        method: "get",
+        url: "/guest/getAllGuest",
+        withCredentials: true
+      })
+        .then((res) => {
+
+        })
+    },
+    // 添加
+    onAddSubmit(){
+      if(!this.formInline.shopName){
+        this.$message({
+          message: '请先选择店铺',
+          type: 'warning'
+        });
+      }
+    },
+    // 查询
+    onSearchSubmit() {
       if(!this.formInline.shopName){
         this.$message({
           message: '请先选择店铺',

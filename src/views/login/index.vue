@@ -153,7 +153,7 @@ export default {
           console.log(res)
           this.loading = false;
           if (res.data.status) {
-            this.$store.commit('SET_NAME',res.data.userInfo.username)
+            this.$store.commit('user/SET_NAME',res.data.userInfo.username)
             this.$router.push({ path: this.redirect || "/" });
           } else {
             this.loginForm.username = "";

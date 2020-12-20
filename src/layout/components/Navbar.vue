@@ -1,45 +1,25 @@
 <template>
   <div class="navbar">
     <hamburger :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
-
-    <breadcrumb class="breadcrumb-container" />
-
-    <div class="right-menu">
-      <el-dropdown class="avatar-container" trigger="click">
-        <div class="avatar-wrapper">
-          <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">
-          <i class="el-icon-caret-bottom" />
+    <div class="right-menu" >
+        <div style="font-weight:600;display:inline-block;margin-right:50px;">
+            <sapn>亲爱的:{{$store.state.user.username}}</sapn>
         </div>
-        <el-dropdown-menu slot="dropdown" class="user-dropdown">
-          <router-link to="/">
-            <el-dropdown-item>
-              Home
-            </el-dropdown-item>
-          </router-link>
-          <a target="_blank" href="https://github.com/PanJiaChen/vue-admin-template/">
-            <el-dropdown-item>Github</el-dropdown-item>
-          </a>
-          <a target="_blank" href="https://panjiachen.github.io/vue-element-admin-site/#/">
-            <el-dropdown-item>Docs</el-dropdown-item>
-          </a>
-          <el-dropdown-item divided @click.native="logout">
-            <span style="display:block;">Log Out</span>
-          </el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
+        <el-button round type="warning" @click="loingOut">退出登录</el-button>
     </div>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import Breadcrumb from '@/components/Breadcrumb'
-import Hamburger from '@/components/Hamburger'
+// import Breadcrumb from '@/components/Breadcrumb'
+// import Hamburger from '@/components/Hamburger'
 
 export default {
+  name: 'Navbar',
   components: {
-    Breadcrumb,
-    Hamburger
+    // Breadcrumb,
+    // Hamburger
   },
   computed: {
     ...mapGetters([
@@ -47,7 +27,12 @@ export default {
       'avatar'
     ])
   },
+  created(){
+  },
   methods: {
+    loingOut(){
+      console.log('点击退出')
+    },
     toggleSideBar() {
       this.$store.dispatch('app/toggleSideBar')
     },
